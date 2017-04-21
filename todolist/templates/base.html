@@ -37,6 +37,11 @@
             <a class="navbar-brand" href="{% url 'todo:home' %}">Todo List</a>
           </div>
           <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                  <li {% if request.path == '/add/' %}class='active'{% endif %}>
+                      <a href="{% url 'todo:create' %}">{% trans "Create ToDo" %}</a>
+                  </li>
+              </ul>
             <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
               <li><p class="navbar-text">{% trans "Signed in as" %} {{ user }}</p></li>

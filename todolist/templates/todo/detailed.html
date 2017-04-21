@@ -3,7 +3,5 @@
 {% block title %}{% trans "List of Tasks" %}{% endblock title %}
 
 {% block content %}
-{% for todo in todo_items %}
-     <a href="{{ todo.get_absolute_url }}">{{ todo }}</a><br/>
-{% endfor %}
+{{ object }}
 {% endblock %}
