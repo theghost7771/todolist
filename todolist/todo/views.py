@@ -25,10 +25,22 @@ class TodoDetailView(LoginRequiredMixin, DetailView):
 
 class TodoCreateView(LoginRequiredMixin, CreateView):
     model = Todo
-    fields = ['title', 'description', 'is_done']
+    fields = ['title', 'description']
     success_msg = _('Created')
 
     def form_valid(self, form):
         messages.info(self.request, self.success_msg)
         form.instance.owner = self.request.user
         return super(TodoCreateView, self).form_valid(form)
+
+
+class TodoUpdateView(LoginRequiredMixin, UpdateView):
+    model = Todo
+    fields = ['title', 'description', 'is_done']
+    slug_field = 'title'
+    slug_url_kwarg = 'title'
+
+    def form_valid(self, form):
+        messages.info(self.request, self.success_msg)
+        form.instance.owner = self.request.user
+        return super(TodoUpdateView, self).form_valid(form)

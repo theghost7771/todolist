@@ -15,4 +15,9 @@ urlpatterns = [
         view=views.TodoCreateView.as_view(),
         name='create'
     ),
+    url(
+        regex=r'^todo/(?P<title>[^/]+)/edit$',
+        view=views.TodoUpdateView.as_view(),
+        name='edit'
+    ),
 ]
