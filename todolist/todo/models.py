@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 class Todo(models.Model):
     title = models.CharField(_('Title'), max_length=255)
     description = models.TextField(_('Description'))
-    is_done = models.BooleanField(_('Is task done?'))
+    is_done = models.BooleanField(_('Is task done?'), default=False)
     is_deleted = models.BooleanField(default=False)
     owner = models.ForeignKey(to=settings.AUTH_USER_MODEL)
     created = models.DateTimeField(auto_now_add=True)
