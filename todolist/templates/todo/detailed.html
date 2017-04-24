@@ -3,5 +3,8 @@
 {% block title %}{% trans "List of Tasks" %}{% endblock title %}
 
 {% block content %}
-{{ object }}
+<h2>{{ object }}</h2>
+<p>
+    {{ object.description }}
+</p>
 {% endblock %}

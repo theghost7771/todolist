@@ -7,3 +7,10 @@ body {
     padding: 15px;
     margin: 0 auto;
 }
+
+.description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 100px;
+}

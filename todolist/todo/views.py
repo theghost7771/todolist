@@ -18,9 +18,6 @@ class TodoListView(LoginRequiredMixin, ListView):
 class TodoDetailView(LoginRequiredMixin, DetailView):
     model = Todo
     template_name = 'todo/detailed.html'
-    # These next two lines tell the view to index lookups by title
-    slug_field = 'title'
-    slug_url_kwarg = 'title'
 
 
 class TodoCreateView(LoginRequiredMixin, CreateView):
@@ -37,8 +34,7 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
 class TodoUpdateView(LoginRequiredMixin, UpdateView):
     model = Todo
     fields = ['title', 'description', 'is_done']
-    slug_field = 'title'
-    slug_url_kwarg = 'title'
+    success_msg = _('Updated')
 
     def form_valid(self, form):
         messages.info(self.request, self.success_msg)

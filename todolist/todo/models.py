@@ -24,4 +24,4 @@ class Todo(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('todo:detail', kwargs={'title': self.title})
+        return reverse('todo:detail', args=[self.id])
