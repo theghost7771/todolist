@@ -14,3 +14,7 @@ body {
     text-overflow: ellipsis;
     max-height: 100px;
 }
+
+.list-group span.disabled h4 {
+    text-decoration: line-through;
+}

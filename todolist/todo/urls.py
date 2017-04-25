@@ -25,4 +25,9 @@ urlpatterns = [
         view=views.TodoDeleteView.as_view(),
         name='delete'
     ),
+    url(
+        regex=r'^todo/status_switch$',
+        view=views.TodoStatusSwitchView.as_view(),
+        name='status_switch'
+    ),
 ]

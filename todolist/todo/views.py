@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, View
 from django.utils.translation import ugettext as _
 from django.http import JsonResponse, Http404
 from django.contrib import messages
 from django.urls import reverse_lazy
 
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin
 
 from .models import Todo
 
@@ -26,7 +26,7 @@ class TodoActionMixin(object):
         return obj
 
     def form_valid(self, form):
-        messages.info(self.request, self.success_msg)
+        messages.success(self.request, self.success_msg)
         form.instance.owner = self.request.user
         return super(TodoActionMixin, self).form_valid(form)
 
@@ -59,3 +59,12 @@ class TodoListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         # to prevent multiple request to users table
         return Todo.objects.prefetch_related()
+
+
+class TodoStatusSwitchView(JSONResponseMixin, AjaxResponseMixin, View):
+
+    def post_ajax(self, request, *args, **kwargs):
+        todo = Todo.objects.get(id=request.POST.get('id'))
+        todo.is_done = not todo.is_done
+        todo.save()
+        return self.render_json_response({'is_done': todo.is_done})

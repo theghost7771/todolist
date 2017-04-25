@@ -55,12 +55,6 @@
         </div>
       </nav>
     <div class="container">
-    {% for message in messages %}
-        <div class="alert alert{% if message.tags %}-{{ message.tags }}{% endif %} alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {{ message }}
-        </div>
-    {% endfor %}
     {% block content %}
       <div class="starter-template">
         <h1>Bootstrap starter template</h1>
@@ -76,6 +70,14 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+        <script src="{% static 'js/project.js' %}" charset="utf-8"></script>
+        <script src="{% static 'js/js.cookie-2.1.4.min.js' %}" charset="utf-8"></script>
+        <script src="{% static 'js/notify.min.js' %}" charset="utf-8"></script>
+        <script type="text/javascript">
+            {% for message in messages %}
+                $.notify("{{ message }}", {position:"bottom right", className: "{{ message.tags }}"});
+            {% endfor %}
+        </script>
     {% endblock %}
   </body>
 </html>

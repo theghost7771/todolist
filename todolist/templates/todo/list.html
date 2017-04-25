@@ -3,28 +3,69 @@
 {% block title %}{% trans "List of Tasks" %}{% endblock title %}
 
 {% block content %}
-{% if todo_items %}
-<div class="list-group">
-    {% for todo in todo_items %}
-      <span class="list-group-item">
-        <h4 class="list-group-item-heading"><a href="{{ todo.get_absolute_url  }}">{{ todo }}</a></h4>
-        <p class="list-group-item-text description">{{ todo.description }}</p>
-        <hr />
-        <button type="button" class="btn btn-success btn-sm">
-            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-        </button>
-        {% if todo.owner == request.user %}
-            <a href="{% url 'todo:edit' todo.id %}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-            </a>
-            <a href="{% url 'todo:delete' todo.id %}" class="btn btn-danger btn-sm">
-                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            </a>
-        {% endif %}
-      </span>
-    {% endfor %}
-</div>
-{% else %}
-<div class="alert alert-info" role="alert">{% trans "No tasks here" %}</div>
-{% endif %}
+    {% if todo_items %}
+        <div class="list-group">
+            {% for todo in todo_items %}
+              <span class="list-group-item{% if todo.is_done %} disabled{% endif %}">
+                <h4 class="list-group-item-heading"><a href="{{ todo.get_absolute_url  }}">{{ todo }}</a></h4>
+                <p class="list-group-item-text description">{{ todo.description }}</p>
+                <hr />
+                <button type="button" class="btn btn-{% if todo.is_done %}danger{% else %}success{% endif %} btn-sm todo-button"
+                onclick="switch_todo_status(this, {{ todo.id }})">
+                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                </button>
+                {% if todo.owner == request.user %}
+                    <a href="{% url 'todo:edit' todo.id %}" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                    <a href="{% url 'todo:delete' todo.id %}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                    </a>
+                {% endif %}
+              </span>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">{% trans "No tasks here" %}</div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                }
+            }
+        });
+        $('.todo-button').click(function() {
+            var todo_id = $(this).parent().data('todo-id');
+
+        });
+    });
+    function switch_todo_status(el, todo_id) {
+        var $button = $(el);
+        var message;
+        var noty_type;
+        $.post("{% url 'todo:status_switch' %}", {'id': todo_id}, function( data ) {
+            if (data.is_done){
+                $button.removeClass('btn-success');
+                $button.addClass('btn-danger');
+                $button.parent().addClass('disabled');
+                message = "{% trans 'Todo marked as done' %}";
+                noty_type = 'success';
+            } else {
+                $button.addClass('btn-success');
+                $button.removeClass('btn-danger');
+                $button.parent().removeClass('disabled');
+                message = "{% trans 'Todo marked as undone' %}";
+                noty_type = 'error';
+            }
+            $.notify(message, {position:"bottom right", className: noty_type});
+        });
+    };
+    </script>
 {% endblock %}
