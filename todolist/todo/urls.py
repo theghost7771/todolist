@@ -20,4 +20,9 @@ urlpatterns = [
         view=views.TodoUpdateView.as_view(),
         name='edit'
     ),
+    url(
+        regex=r'^todo/(?P<pk>\d+)/delete$',
+        view=views.TodoDeleteView.as_view(),
+        name='delete'
+    ),
 ]
