@@ -31,15 +31,6 @@ class TodoActionMixin(object):
         return super(TodoActionMixin, self).form_valid(form)
 
 
-class TodoListView(LoginRequiredMixin, ListView):
-    model = Todo
-    template_name = 'todo/list.html'
-    context_object_name = 'todo_items'
-
-    def get_queryset(self):
-        return Todo.objects.select_related()
-
-
 class TodoDetailView(LoginRequiredMixin, DetailView):
     model = Todo
     template_name = 'todo/detailed.html'
@@ -47,14 +38,24 @@ class TodoDetailView(LoginRequiredMixin, DetailView):
 
 class TodoCreateView(LoginRequiredMixin, TodoActionMixin, CreateView):
     fields = ['title', 'description']
-    success_msg = _('Created')
+    success_msg = _('Task created')
 
 
 class TodoUpdateView(LoginRequiredMixin, TodoActionMixin, UpdateView):
     fields = ['title', 'description', 'is_done']
-    success_msg = _('Updated')
+    success_msg = _('Task updated')
 
 
 class TodoDeleteView(LoginRequiredMixin, TodoActionMixin, DeleteView):
     template_name = 'todo/delete.html'
-    success_msg = _('Deleted')
+    success_msg = _('Task deleted')
+
+
+class TodoListView(LoginRequiredMixin, ListView):
+    model = Todo
+    template_name = 'todo/list.html'
+    context_object_name = 'todo_items'
+
+    def get_queryset(self):
+        # to prevent multiple request to users table
+        return Todo.objects.prefetch_related()
