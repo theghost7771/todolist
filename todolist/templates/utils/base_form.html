@@ -1,13 +1,4 @@
-{% extends "registration/base.html" %}
 {% load i18n crispy_forms_tags %}
-
-{% block title %}{% trans "Create new ToDo" %}{% endblock %}
-
-{% block inner %}
-
-<h1>{% trans "Create new ToDo" %}</h1>
-
-
 <form method="POST" action="">
   {% csrf_token %}
   {{ form|crispy }}
@@ -19,5 +10,3 @@
       {% endif %}
   </button>
 </form>
-
-{% endblock %}

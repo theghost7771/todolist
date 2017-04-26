@@ -17,8 +17,8 @@
             {% for todo in todo_items %}
               <span class="list-group-item{% if todo.is_done %} disabled{% endif %}">
                 <small class='pull-right'>{% trans "Created by" %} {{ todo.owner }} {% trans "on" %} {{ todo.created|date }}</small>
-                <h4 class="list-group-item-heading"><a href="{{ todo.get_absolute_url  }}">{{ todo }}</a></h4>
-                <span class="list-group-item-text description">{{ todo.description|truncatewords:100 }}</span>
+                <h4 class="list-group-item-heading">{{ todo }}</h4>
+                <span class="list-group-item-text description">{{ todo.description }}</span>
                 <hr />
                 {% if todo.is_done %}
                     <p>{% trans "Done by:" %} {{ todo.done_by|default:todo.owner }}</p>

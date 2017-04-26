@@ -22,6 +22,7 @@ class TodoActionMixin(object):
 
     def get_object(self, queryset=None):
         obj = super(TodoActionMixin, self).get_object()
+        # deny editing and deleting, for not owned tasks
         if obj.owner.id != self.request.user.id:
             raise PermissionDenied
         return obj
@@ -32,19 +33,16 @@ class TodoActionMixin(object):
         return super(TodoActionMixin, self).form_valid(form)
 
 
-class TodoDetailView(LoginRequiredMixin, DetailView):
-    model = Todo
-    template_name = 'todo/detailed.html'
-
-
 class TodoCreateView(LoginRequiredMixin, TodoActionMixin, CreateView):
     fields = ['title', 'description']
     success_msg = _('Task created')
+    template_name = 'todo/create.html'
 
 
 class TodoUpdateView(LoginRequiredMixin, TodoActionMixin, UpdateView):
     fields = ['title', 'description', 'is_done']
     success_msg = _('Task updated')
+    template_name = 'todo/edit.html'
 
 
 class TodoDeleteView(LoginRequiredMixin, TodoActionMixin, DeleteView):

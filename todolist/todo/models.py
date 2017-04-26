@@ -24,11 +24,9 @@ class Todo(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse('todo:detail', args=[self.id])
-
     def mark_done(self, user):
-        """Mark task as done, record who did it, and save row"""
+        """Mark task as done, record who did it, and save row.
+           Return True if task was marked as done in this call, else return None"""
         if not self.is_done:
             self.is_done = True
             self.done_by = user
