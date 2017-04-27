@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.TodoListView.as_view(), name='home'),
     url(
-        regex=r'^add/$',
+        regex=r'^add$',
         view=views.TodoCreateView.as_view(),
         name='create'
     ),
@@ -21,8 +21,8 @@ urlpatterns = [
         name='delete'
     ),
     url(
-        regex=r'^todo/status_switch$',
-        view=views.TodoStatusSwitchView.as_view(),
-        name='status_switch'
+        regex=r'^todo/mark_done$',
+        view=views.TodoMarkDoneView.as_view(),
+        name='mark_done'
     ),
 ]

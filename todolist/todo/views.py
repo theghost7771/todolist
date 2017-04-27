@@ -18,7 +18,7 @@ class TodoActionMixin(object):
 
     @property
     def success_msg(self):
-        return NotImplemented
+        return NotImplemented  # pragma: no cover
 
     def get_object(self, queryset=None):
         obj = super(TodoActionMixin, self).get_object()
@@ -62,17 +62,17 @@ class TodoListView(LoginRequiredMixin, ListView):
 
         # save state to session
         if 'hide_done' in self.request.GET:
-            self.request.session['hide_done'] = self.request.GET['hide_done']
+            self.request.session['hide_done'] = self.request.GET['hide_done'] == 'True'
             self.request.session.modified = True
 
         # modify queryset according to user wishes
-        if self.request.session.get('hide_done') == 'True':
+        if self.request.session.get('hide_done'):
             queryset = queryset.filter(is_done=False)
 
         return queryset
 
 
-class TodoStatusSwitchView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, View):
+class TodoMarkDoneView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, View):
 
     def post_ajax(self, request, *args, **kwargs):
         todo = Todo.objects.get(id=request.POST.get('id'))
