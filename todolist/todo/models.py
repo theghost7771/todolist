@@ -25,7 +25,8 @@ class Todo(models.Model):
 
     def mark_done(self, user):
         """Mark task as done, record who did it, and save row.
-           Return True if task was marked as done in this call, else return None"""
+           Don't save row, if todo already done.
+           Return True if todo was marked as done in this call, else return None"""
         if not self.is_done:
             self.is_done = True
             self.done_by = user
