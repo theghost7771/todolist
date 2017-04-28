@@ -1,0 +1,10 @@
+mkdir todolist && cd todolist
+git clone https://github.com/theghost7771/todolist.git
+virtualenv -p python3 venv
+source venv/bin/activate && cd todolist/
+pip install -r requirements/local.txt
+Rename env.example to .env and setup variables. IMPORTANT change DB settings in .env file
+Create database with user you set in .env
+python manage.py migrate
+python manage.py runserver
+http://127.0.0.1:8000
