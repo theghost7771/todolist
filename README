@@ -3,8 +3,9 @@ git clone https://github.com/theghost7771/todolist.git
 virtualenv -p python3 venv
 source venv/bin/activate && cd todolist/
 pip install -r requirements/local.txt
-Rename env.example to .env and setup variables. IMPORTANT change DB settings in .env file
-Create database with user you set in .env
+Rename env.example to .env and setup variables.
+IMPORTANT change DB settings in .env file  # see db_url in https://github.com/joke2k/django-environ#supported-types
+Create database and user from .env
 python manage.py migrate
 python manage.py runserver
 http://127.0.0.1:8000
